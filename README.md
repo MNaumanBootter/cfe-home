@@ -1,2 +1,2 @@
 # cfe-home
-Django Practice with Tutorial from Coding Entrepreneurs  
+Django Practice with Tutorial from Coding Entrepreneurs
