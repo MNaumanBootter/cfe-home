@@ -9,3 +9,6 @@ class Products(models.Model):
     @property
     def sale_price(self):
         return f"{float(self.price) * 0.8:.2f}"
+
+    def get_discount(self):
+        return f"{float(self.price) * 0.9:.2f}"
