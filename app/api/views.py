@@ -1,5 +1,5 @@
 from django.http import HttpRequest
-from products.models import Products
+from products.models import Product
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from products.serializers import ProductSerializer
@@ -12,6 +12,6 @@ def api_home(request: HttpRequest) -> Response:
     """
     serializer = ProductSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        instance: Products = serializer.save()
+        instance: Product = serializer.save()
         print(serializer.data)
         return Response(serializer.data)
