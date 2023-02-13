@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, mixins
 from products.models import Product
 from products.serializers import ProductSerializer
 
@@ -40,3 +40,30 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
 
     # def perform_destroy(self, instance):
     #     return super().perform_destroy(instance)
+
+
+class ProductMixinView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    generics.GenericAPIView
+    ):
+
+    queryset = Product.objects.all()
+    serializer_class= ProductSerializer
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def perform_create(self, serializer: ProductSerializer):
+        title = serializer.validated_data.get("title")
+        content = serializer.validated_data.get("content")
+        if content is None:
+            content = title
+        serializer.save(content=content)
