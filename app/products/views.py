@@ -29,9 +29,8 @@ class ProductUpdateAPIView(generics.UpdateAPIView, StaffEditorPermissionMixin):
     def perform_update(self, serializer):
         instance = serializer.save()
 
-        if not instance:
+        if not instance.content:
             instance.content = instance.title
-            # serializer.save()
 
 
 class ProductDestroyAPIView(generics.DestroyAPIView, StaffEditorPermissionMixin):
