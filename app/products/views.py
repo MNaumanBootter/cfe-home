@@ -13,7 +13,14 @@ class ProductListCreateAPIView(generics.ListCreateAPIView, StaffEditorPermission
         content = serializer.validated_data.get("content")
         if content is None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        user = self.request.user
+        if not user.is_authenticated:
+            return Product.objects.none()
+        return qs.filter(user=user)
 
 
 class ProductDetailAPIView(generics.RetrieveAPIView, StaffEditorPermissionMixin):
