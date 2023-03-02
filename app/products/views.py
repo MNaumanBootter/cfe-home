@@ -24,12 +24,20 @@ class ProductListCreateAPIView(
 
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView, StaffEditorPermissionMixin):
+class ProductDetailAPIView(
+    UserQuerySetMixin,
+    generics.RetrieveAPIView,
+    StaffEditorPermissionMixin):
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-class ProductUpdateAPIView(generics.UpdateAPIView, StaffEditorPermissionMixin):
+class ProductUpdateAPIView(
+    UserQuerySetMixin,
+    generics.UpdateAPIView,
+    StaffEditorPermissionMixin):
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = "pk"
@@ -41,7 +49,11 @@ class ProductUpdateAPIView(generics.UpdateAPIView, StaffEditorPermissionMixin):
             instance.content = instance.title
 
 
-class ProductDestroyAPIView(generics.DestroyAPIView, StaffEditorPermissionMixin):
+class ProductDestroyAPIView(
+    UserQuerySetMixin,
+    generics.DestroyAPIView,
+    StaffEditorPermissionMixin):
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = "pk"
