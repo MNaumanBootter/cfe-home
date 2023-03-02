@@ -4,6 +4,7 @@ from products.models import Product
 from products.validators import unique_field_validator, validate_title
 
 class ProductSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(source="user.id", read_only=True)
     discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(view_name="product-detail", lookup_field="pk")
@@ -13,6 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "id",
+            "user_id",
             "title",
             "content",
             "price",
