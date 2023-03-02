@@ -1,10 +1,17 @@
 from rest_framework import generics
 from products.models import Product
 from products.serializers import ProductSerializer
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import (
+    StaffEditorPermissionMixin,
+    UserQuerySetMixin
+    )
 
 
-class ProductListCreateAPIView(generics.ListCreateAPIView, StaffEditorPermissionMixin):
+class ProductListCreateAPIView(
+    UserQuerySetMixin,
+    StaffEditorPermissionMixin,
+    generics.ListCreateAPIView):
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -15,12 +22,6 @@ class ProductListCreateAPIView(generics.ListCreateAPIView, StaffEditorPermission
             content = title
         serializer.save(user=self.request.user, content=content)
 
-    def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset(*args, **kwargs)
-        user = self.request.user
-        if not user.is_authenticated:
-            return Product.objects.none()
-        return qs.filter(user=user)
 
 
 class ProductDetailAPIView(generics.RetrieveAPIView, StaffEditorPermissionMixin):
