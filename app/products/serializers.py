@@ -22,6 +22,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "discount",
             "url",
             "edit_url",
+            "public",
         ]
 
     def get_edit_url(self, obj):
